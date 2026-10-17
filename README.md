@@ -21,6 +21,15 @@ GitHub muestra los notebooks como documentos estáticos: **no ejecuta la aplicac
 
 Para ejecutar el dashboard **no hace falta volver a procesar los CSV originales ni correr el análisis FPCA**, siempre que el repositorio incluya los seis archivos de resultados indicados más abajo.
 
+También se puede iniciar como aplicación independiente, sin abrir Jupyter:
+
+```bash
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Abrí `http://127.0.0.1:8050`. En Render y Railway se usa Gunicorn para iniciar la misma aplicación.
+
 ## Archivos necesarios para el dashboard
 
 Además de los notebooks, dependencias y recursos visuales, el dashboard necesita:
@@ -61,4 +70,27 @@ Los datos originales de `data/` ocupan aproximadamente 12 GB y las cachés local
 
 Antes de publicar, verificá que la licencia y las condiciones de uso de los datos permitan redistribuir los resultados incluidos. Si los CSV derivados tampoco se pueden publicar, compartilos por un medio autorizado y colocalos en las rutas indicadas antes de abrir el notebook.
 
-Subir el repositorio a GitHub **no publica el dashboard como sitio web interactivo**. Para que los profesores lo usen directamente desde un enlace web, hay que desplegar la aplicación Dash en un servicio compatible; este repositorio contiene el notebook para ejecutarla localmente.
+## Publicar en Render o Railway
+
+La aplicación independiente está en `app.py`; el dashboard conserva los gráficos y controles del notebook. Para desplegarlo, subí a un repositorio de GitHub estos archivos y carpetas:
+
+- `app.py`, `requirements.txt`, `Procfile` y `.python-version`
+- `assets/`
+- `data/estaciones.geojson`
+- Los seis CSV enumerados en «Archivos necesarios para el dashboard»
+
+No incluyas los CSV originales ni las cachés. Los archivos derivados que necesita la aplicación ya están versionados en este repositorio. Revisá igualmente que su licencia permita publicarlos.
+
+### Render
+
+1. En Render, elegí **New → Blueprint** y conectá el repositorio de GitHub. Render leerá `render.yaml`, instalará los paquetes y levantará el servicio web.
+2. Cuando el despliegue termine, abrí la URL `*.onrender.com` que Render muestra en el servicio y compartila con los profesores.
+
+También se puede crear un **Web Service** manualmente con el comando de construcción `pip install -r requirements.txt` y el comando de inicio `gunicorn app:server --bind 0.0.0.0:$PORT`.
+
+### Railway
+
+1. En Railway, elegí **New Project → Deploy from GitHub Repo** y seleccioná el repositorio. Railway instalará las dependencias de `requirements.txt` y usará el comando web de `Procfile`.
+2. En la configuración del servicio, habilitá la generación de un dominio público (**Settings → Networking → Generate Domain**). Compartí el dominio que Railway asigne.
+
+El primer despliegue tarda unos minutos mientras se instalan las dependencias. En el plan gratuito de Render, el servicio puede suspenderse tras un período sin actividad; el primer acceso posterior puede demorar mientras vuelve a iniciar.
