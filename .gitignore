@@ -1,0 +1,24 @@
+.DS_Store
+.venv/
+__pycache__/
+.chart-data-*/
+
+# Datos crudos: almacenar únicamente el GeoJSON liviano necesario para el mapa.
+data/*
+!data/estaciones.geojson
+
+# Cachés, temporales y archivos de trabajo locales.
+subte_fpca_work/cache_local/
+subte_fpca_work/duckdb_tmp/
+subte_fpca_work/**/*.duckdb
+subte_fpca_work/**/*.wal
+subte_fpca_work/**/*.tmp
+
+# Conservar solo los resultados que necesita el dashboard.
+subte_fpca_work/resultados/*
+!subte_fpca_work/resultados/metricas_priorizacion_operativa.csv
+!subte_fpca_work/resultados/mapa_estaciones_perfil_tipico.csv
+!subte_fpca_work/resultados/perfiles_suavizados_segmentados.csv
+!subte_fpca_work/resultados/scores_fpca_clusters_segmentados.csv
+!subte_fpca_work/resultados/serie_diaria_red.csv
+!subte_fpca_work/resultados/mapa_estaciones_georreferenciadas.csv
